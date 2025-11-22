@@ -15,29 +15,29 @@ const audioTracks: AudioTrack[] = [
     id: 1,
     title: '清晨冥想 - 宁静的开始',
     description: '一段宁静的冥想音乐，帮助您开启美好的一天，让心灵在清晨的宁静中找到平衡与和谐。',
-    duration: '10:32',
-    url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3',
+    duration: '6:17',
+    url: '/MP3/07. Jia Peng Fang - River.flac',
   },
   {
     id: 2,
     title: '午后时光 - 轻松旋律',
     description: '轻松愉悦的旋律，适合午后小憩时聆听，让忙碌的午后时光变得更加惬意和放松。',
-    duration: '8:15',
-    url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+    duration: '5:03',
+    url: '/MP3/08. Missa Johnouchi - Marco Polo.flac',
   },
   {
     id: 3,
     title: '夜晚思考 - 深度对话',
     description: '深沉的音乐氛围，引导您进入深度的思考状态，适合夜晚独处时的自我对话与反思。',
-    duration: '15:48',
-    url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3',
+    duration: '4:47',
+    url: '/MP3/10. Jiang Xiao Qing - Waters Edge.flac',
   },
   {
     id: 4,
     title: '周末放松 - 自由节奏',
     description: '自由随性的节奏，为您的周末时光增添轻松氛围，让身心在音乐中完全释放。',
-    duration: '12:05',
-    url: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3',
+    duration: '4:40',
+    url: '/MP3/11. Shao Rong - Wild Rose.flac',
   },
 ];
 
@@ -47,6 +47,24 @@ export default function Home() {
 
   const handleTrackSelect = (track: AudioTrack) => {
     setCurrentTrack(track);
+  };
+
+  // 自动切换到下一首歌曲
+  const handleNextTrack = () => {
+    if (!currentTrack) return;
+
+    const currentIndex = audioTracks.findIndex(
+      (track) => track.id === currentTrack.id
+    );
+
+    if (currentIndex === -1) return;
+
+    // 如果是最后一首，循环回到第一首
+    const nextIndex =
+      currentIndex === audioTracks.length - 1 ? 0 : currentIndex + 1;
+    const nextTrack = audioTracks[nextIndex];
+
+    setCurrentTrack(nextTrack);
   };
 
   // 当 currentTrack 改变时，更新音频源并播放
@@ -81,7 +99,7 @@ export default function Home() {
           {/* Cover Image */}
           <div className="w-full h-64 md:h-80 bg-gradient-to-br from-purple-600 to-blue-600 relative overflow-hidden">
             <img
-              src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=1200&h=600&fit=crop"
+              src="/PIC/ops-coffee-1763790592228.jpg?w=918&h=244&fit=crop"
               alt="播客封面"
               className="w-full h-full object-cover opacity-90"
             />
@@ -120,8 +138,9 @@ export default function Home() {
                     controls
                     className="w-full h-12"
                     preload="metadata"
+                    onEnded={handleNextTrack}
                   >
-                    <source src={currentTrack.url} type="audio/mpeg" />
+                    <source src={currentTrack.url} type="audio/flac" />
                     您的浏览器不支持音频播放。
                   </audio>
                 </div>
